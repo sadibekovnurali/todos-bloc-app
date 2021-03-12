@@ -52,12 +52,12 @@ class TodosBloc extends Bloc<TodosEvent, TodosState> {
     }
   }
 
-  Stream<TodosState> _mapTodoUpdatedToState(TodoUpdated todosEvent) async* {
+  Stream<TodosState> _mapTodoUpdatedToState(TodoUpdated event) async* {
     if (state is TodosLoadSuccess) {
       final List<Todo> updatedTodos =
           (state as TodosLoadSuccess).todos.map((todo) {
-        return todo.id == todosEvent.updatedTodo.id
-            ? todosEvent.updatedTodo
+        return todo.id == event.updatedTodo.id
+            ? event.updatedTodo
             : todo;
       }).toList();
       yield TodosLoadSuccess(updatedTodos);

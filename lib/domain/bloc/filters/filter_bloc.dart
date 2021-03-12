@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:todos_bloc/domain/bloc/todos/todos_bloc.dart';
-import 'package:todos_bloc/domain/models/filter_model.dart';
+import 'package:todos_bloc/domain/models/filter_enums.dart';
 import 'package:todos_bloc/domain/models/todo_model.dart';
 
 part 'filter_event.dart';
@@ -29,31 +29,31 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
   @override
   Stream<FilterState> mapEventToState(
-    FilterEvent todosEvent,
+    FilterEvent event,
   ) async* {
-    if (todosEvent is FilterUpdated) {
-      yield* _mapUpdateFilterToState(todosEvent);
-    } else if (todosEvent is TodosUpdated) {
-      yield* _mapTodosUpdatedToState(todosEvent);
+    if (event is FilterUpdated) {
+      yield* _mapUpdateFilterToState(event);
+    } else if (event is TodosUpdated) {
+      yield* _mapTodosUpdatedToState(event);
     }
   }
 
   Stream<FilterState> _mapUpdateFilterToState(
-    FilterUpdated todosEvent,
+    FilterUpdated event,
   ) async* {
     if (todosBloc is FilterLoadSuccess) {
       yield FilterLoadSuccess(
         _mapTodosToFilteredTodos(
           (todosBloc.state as TodosLoadSuccess).todos,
-          todosEvent.filter,
+          event.filter,
         ),
-        todosEvent.filter,
+        event.filter,
       );
     }
   }
 
   Stream<FilterState> _mapTodosUpdatedToState(
-    TodosUpdated todosEvent,
+    TodosUpdated event,
   ) async* {
     final visibilityFilter = state is FilterLoadSuccess
         ? (state as FilterLoadSuccess).activeFilter
@@ -67,9 +67,6 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     );
   }
 
-  Stream<FilterState> _mapUpdatedTodosToState(
-    TodosUpdated todosEvent,
-  ) async* {}
   List<Todo> _mapTodosToFilteredTodos(
       List<Todo> todos, VisibilityFilter filter) {
     return todos.where((todo) {

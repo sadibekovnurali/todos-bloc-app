@@ -10,7 +10,6 @@ class FilterUpdated extends FilterEvent {
   FilterUpdated(this.filter);
 
   @override
-  // TODO: implement props
   List<Object> get props => [filter];
 
   @override
@@ -23,7 +22,6 @@ class TodosUpdated extends FilterEvent {
   const TodosUpdated(this.todos);
 
   @override
-  // TODO: implement props
   List<Object> get props => [todos];
 
   @override
